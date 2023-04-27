@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -10,6 +11,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
+    use CrudTrait;
     use HasApiTokens, HasFactory, Notifiable;
 
     /**
@@ -17,10 +19,14 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
+    protected $table="usuarios";
+    
     protected $fillable = [
         'name',
         'email',
         'password',
+        'id_role'
     ];
 
     /**
@@ -41,4 +47,19 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function suscripciones()
+    {
+        return $this->hasMany(Suscripcion::class, 'id');
+    }
+
+    public function dietas()
+    {
+        return $this->hasMany(Dieta::class, 'id');
+    }
+
+    public function inscribes()
+    {
+        return $this->belongsToMany(Curso::class, 'inscribes');
+    }
 }
