@@ -20,7 +20,6 @@ class UsuarioSeeder extends Seeder
             'name'      => config('admin.name'),
             'email'     => config('admin.email'),
             'password'  => Hash::make(config('admin.password')),
-            'id_role' => '3'
         ]);
         $admin->save();
     }

@@ -18,11 +18,11 @@ class RoleSeeder extends Seeder
     public function run()
     {
         $roles=[
-            ['id'=> '1','nombre'=>'usuario'],
-            ['id'=> '2','nombre'=>'editor'],
-            ['id'=> '3','nombre'=>'admin'],
-            ['id'=> '4','nombre'=>'premium'],
-            ['id'=> '5','nombre'=>'entrenador']
+            ['id'=> '1','name'=>'usuario'],
+            ['id'=> '2','name'=>'editor'],
+            ['id'=> '3','name'=>'admin'],
+            ['id'=> '4','name'=>'premium'],
+            ['id'=> '5','name'=>'entrenador']
         ];
         DB::table('roles')->insert($roles);
     }

@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('roles', function (Blueprint $table) {
             $table->id("id")->autoincrementable();
-            $table->string('nombre')->unique();
+            $table->string('name')->unique();
         });
 
         Artisan::call('db:seed', [

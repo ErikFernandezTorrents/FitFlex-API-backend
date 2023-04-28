@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\UserRequest;
+use App\Http\Requests\SuscripcionRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 /**
- * Class UserCrudController
+ * Class SuscripcionCrudController
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
-class UserCrudController extends CrudController
+class SuscripcionCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
@@ -26,9 +26,9 @@ class UserCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\User::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/user');
-        CRUD::setEntityNameStrings('user', 'users');
+        CRUD::setModel(\App\Models\Suscripcion::class);
+        CRUD::setRoute(config('backpack.base.route_prefix') . '/suscripcion');
+        CRUD::setEntityNameStrings('suscripcion', 'suscripcions');
     }
 
     /**
@@ -39,10 +39,10 @@ class UserCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::column('name');
-        CRUD::column('email');
-        CRUD::column('password');
-        CRUD::column('id_role');
+        CRUD::column('cantidad_pagada');
+        CRUD::column('fecha_ini');
+        CRUD::column('fecha_fin');
+        CRUD::column('periodo_contr');
 
         /**
          * Columns can be defined using the fluent syntax or array syntax:
@@ -59,12 +59,12 @@ class UserCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(UserRequest::class);
-        
-        CRUD::field('name');
-        CRUD::field('email');
-        CRUD::field('password');
-        CRUD::field('id_role');
+        CRUD::setValidation(SuscripcionRequest::class);
+
+        CRUD::field('cantidad_pagada');
+        CRUD::field('fecha_ini');
+        CRUD::field('fecha_fin');
+        CRUD::field('periodo_contr');
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:

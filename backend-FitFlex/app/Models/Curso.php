@@ -10,8 +10,10 @@ class Curso extends Model
 {
     use CrudTrait;
     use HasFactory;
+    protected $table = 'cursos';
 
     protected $fillable = [
+        'id',
         'titulo',
         'descripcion',
         'modalidad',

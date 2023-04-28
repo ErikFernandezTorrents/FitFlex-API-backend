@@ -2,14 +2,17 @@
 
 namespace App\Models;
 
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Suscripcion extends Model
 {
+    use CrudTrait;
     use HasFactory;
-
+    protected $table = 'suscripciones';
     protected $fillable = [
+        'id',
         'cantidad_pagada',
         'fecha_ini',
         'fecha_fin',
