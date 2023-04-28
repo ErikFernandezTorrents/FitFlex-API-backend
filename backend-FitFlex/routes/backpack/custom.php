@@ -28,4 +28,5 @@ Route::group([
     Route::crud('ejercicio', 'EjercicioCrudController');
     Route::crud('ejercicio-sesion', 'EjercicioSesionCrudController');
     Route::crud('inscripcion', 'InscripcionCrudController');
+    Route::crud('permission', 'PermissionCrudController');
 }); // this should be the absolute last line of this file

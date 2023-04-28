@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('inscripciones', function (Blueprint $table) {
             $table->unsignedBigInteger('id_usuario');
-            $table->foreign('id_usuario')->references('id')->on('usuarios')
+            $table->foreign('id_usuario')->references('id')->on('users')
             ->onDelete('cascade');
             $table->unsignedBigInteger('id_curso');
             $table->foreign('id_curso')->references('id')->on('cursos')

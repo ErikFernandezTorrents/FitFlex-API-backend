@@ -2,16 +2,17 @@
 
 namespace App\Models;
 
-use Backpack\CRUD\app\Models\Traits\CrudTrait;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 
 class User extends Authenticatable
 {
+    use \Backpack\CRUD\app\Models\Traits\CrudTrait;
     use HasRoles;
     use CrudTrait;
     use HasApiTokens, HasFactory, Notifiable;
@@ -22,14 +23,15 @@ class User extends Authenticatable
      * @var array<int, string>
      */
 
-    protected $table="usuarios";
-    
+    protected $table="users";
+    public $guard_name = 'web';
+
     protected $fillable = [
         'id',
         'name',
         'email',
         'password',
-        'id_role'
+        'role_id'
     ];
 
     /**

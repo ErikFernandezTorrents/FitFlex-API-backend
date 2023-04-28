@@ -87,11 +87,11 @@ class RoleAndPermissionSeeder extends Seeder
         Permission::create(['name' => 'inscripciones.read']);
         Permission::create(['name' => 'inscripciones.delete']);
 
-        $adminRole->givePermissionTo([ 'users.*','planes.list','planes.read','suscripciones.list','suscripciones.read','dietas.list','dietas.read','cursos.list','cursos.read','usuario_sesiones.list','usuario_sesiones.read','ejercicios.list','ejercicios.read','ejercicios_sesiones.list','ejercicios_sesiones.read','inscripciones.list','inscripciones.read']);
-        $userRole->givePermissionTo([ '' ]);
-        $editorRole->givePermissionTo([ 'users.list','users.read','planes.*','suscripciones.*','dietas.*','cursos.*','usuario_sesiones.*','ejercicios.*','ejercicios_sesiones.*','inscripciones.*']);
-        $peremiumRole->givePermissionTo([ '' ]);
-        $entrenadorRole->givePermissionTo([ '' ]);
+        $adminRole->givePermissionTo([ 'usuarios.*','planes.list','planes.read','suscripciones.list','suscripciones.read','dietas.list','dietas.read','cursos.list','cursos.read','usuario_sesiones.list','usuario_sesiones.read','ejercicios.list','ejercicios.read','ejercicios_sesiones.list','ejercicios_sesiones.read','inscripciones.list','inscripciones.read']);
+        $userRole->givePermissionTo([ 'inscripciones.create','cursos.list','cursos.read','suscripciones.create','suscripciones.delete','ejercicios.list','ejercicios.read' ]);
+        $editorRole->givePermissionTo([ 'usuarios.list','usuarios.read','planes.*','suscripciones.*','dietas.*','cursos.*','usuario_sesiones.*','ejercicios.*','ejercicios_sesiones.*','inscripciones.*']);
+        $peremiumRole->givePermissionTo([ 'inscripciones.create','inscripciones.delete','inscripciones.list','inscripciones.read','cursos.list','cursos.read','suscripciones.create','suscripciones.delete','ejercicios.list','ejercicios.read']);
+        $entrenadorRole->givePermissionTo([ 'inscripciones.create','inscripciones.delete','inscripciones.list','inscripciones.read','cursos.list','cursos.read','suscripciones.create','suscripciones.delete','ejercicios.list','ejercicios.read' ]);
 
         $name  = config('admin.name');
         $admin = User::where('name', $name)->first();

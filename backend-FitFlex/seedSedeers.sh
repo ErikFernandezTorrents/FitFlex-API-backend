@@ -7,6 +7,7 @@ php artisan db:seed --class=CursoSeeder
 php artisan db:seed --class=SesionSeeder
 php artisan db:seed --class=UsuarioSeeder
 php artisan db:seed --class=UsuarioSesionSeeder
+php artisan db:seed --class=RoleAndPermissionSeeder
 php artisan db:seed --class=EjercicioSeeder
 php artisan db:seed --class=EjercicioSesionSeeder
 php artisan db:seed --class=InscripcionSeeder

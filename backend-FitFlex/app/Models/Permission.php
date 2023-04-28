@@ -6,22 +6,13 @@ use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Dieta extends Model
+class Permission extends Model
 {
     use CrudTrait;
     use HasFactory;
-
-    protected $table = 'dietas';
-
+    protected $table = 'permissions';
     protected $fillable = [
-        'id',
-        'name',
-        'descripcion',
-        'filepath',
+        'id_usuario',
+        'id_curso',
     ];
-    
-    public function usuarios()
-    {
-        return $this->hasMany(User::class,'id');
-    }
 }
