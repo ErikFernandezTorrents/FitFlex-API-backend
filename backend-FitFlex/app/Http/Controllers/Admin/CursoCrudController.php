@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-
+use Illuminate\Http\Request;
 use App\Http\Requests\CursoRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
@@ -65,6 +65,7 @@ class CursoCrudController extends CrudController
      */
     protected function setupListOperation()
     {
+        CRUD::column('id')->label(__('id'));
         CRUD::column('titulo');
         CRUD::column('descripcion');
         CRUD::column('modalidad');
@@ -92,13 +93,28 @@ class CursoCrudController extends CrudController
         CRUD::field('descripcion');
         CRUD::field('modalidad');
         CRUD::field('duracion');
-        CRUD::field('filepath');
+        CRUD::addField([
+            'name' => 'filepath',
+            'label' => 'Imagen',
+            'type' => 'upload',
+            'upload' => true,
+            'disk' => 'public',
+            'prefix' => 'filepath',
+            'overwrite' => false,
+            'crop' => false,
+            'aspect_ratio' => 0,
+            'mime_types' => 'png,jpg',
+            'store_as' => function (Request $request, $file) {
+                return 'imagen_' . time() . '.' . $file->getClientOriginalExtension();
+            },
+        ]);
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:
          * - CRUD::field('price')->type('number');
          * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
          */
+
     }
 
     /**
@@ -110,5 +126,34 @@ class CursoCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+
+    }
+
+    public function store(Request $request)
+    {
+        $this->validate($request, [
+            'titulo' => 'required',
+            'descripcion' => 'required',
+            'modalidad' => 'required',
+            'duracion' => 'required',
+            'filepath' => 'required|mimes:png,jpg|max:1024',
+        ]);
+
+        // guardar el archivo de video en la store de Laravel
+        $filepath = $request->file('filepath');
+        $filepath_path = $filepath->store('public/imagenes');
+
+        // crear el nuevo registro en la base de datos
+        $curso = new \App\Models\Curso();
+        $curso->titulo = $request->input('titulo');
+        $curso->descripcion = $request->input('descripcion');
+        $curso->modalidad = $request->input('modalidad');
+        $curso->duracion = $request->input('duracion');
+        $filepath->move(public_path('imagenes'), $filepath->getClientOriginalName());
+        $curso->filepath = $filepath_path;
+        $curso->timestamps = false;
+        $curso->save();
+
+        return redirect('/admin/curso');
     }
 }

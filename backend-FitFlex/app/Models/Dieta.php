@@ -12,7 +12,7 @@ class Dieta extends Model
     use HasFactory;
 
     protected $table = 'dietas';
-
+    public $timestamps = false;
     protected $fillable = [
         'id',
         'name',

@@ -11,6 +11,7 @@ class Plan extends Model
     use CrudTrait;
     use HasFactory;
     protected $table = 'planes';
+    public $timestamps = false;
     protected $fillable = [
         'id',
         'name',

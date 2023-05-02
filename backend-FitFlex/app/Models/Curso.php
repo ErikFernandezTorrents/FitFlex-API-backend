@@ -20,7 +20,8 @@ class Curso extends Model
         'duracion',
         'filepath',
     ];
-
+    public $timestamps = false;
+    
     public function sesiones()
     {
         return $this->hasMany(Sesion::class);

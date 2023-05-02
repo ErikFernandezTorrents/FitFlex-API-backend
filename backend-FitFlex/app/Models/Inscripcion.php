@@ -11,6 +11,7 @@ class Inscripcion extends Model
     use CrudTrait;
     use HasFactory;
     protected $table = 'inscripciones';
+    public $timestamps = false;
     protected $fillable = [
         'id_usuario',
         'id_curso',

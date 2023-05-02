@@ -11,6 +11,7 @@ class UsuarioSesion extends Model
     use CrudTrait;
     use HasFactory;
     protected $table = 'usuario_sesiones';
+    public $timestamps = false;
     protected $fillable = [
         'id_sesiones',
         'id_usuario',

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\EjercicioRequest;
+use Illuminate\Http\Request;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -65,6 +66,7 @@ class EjercicioCrudController extends CrudController
      */
     protected function setupListOperation()
     {
+        CRUD::column('id')->label(__('id'));
         CRUD::column('titulo');
         CRUD::column('descripcion');
         CRUD::column('id_video');
@@ -88,14 +90,29 @@ class EjercicioCrudController extends CrudController
 
         CRUD::field('titulo');
         CRUD::field('descripcion');
-        CRUD::field('id_video');
-
+        CRUD::addField([
+            'name' => 'id_video',
+            'label' => 'Video',
+            'type' => 'upload',
+            'upload' => true,
+            'disk' => 'public',
+            'prefix' => 'videos',
+            'overwrite' => false,
+            'crop' => false,
+            'aspect_ratio' => 0,
+            'mime_types' => 'mp4,avi,wmv',
+            'store_as' => function (Request $request, $file) {
+                return 'video_' . time() . '.' . $file->getClientOriginalExtension();
+            },
+        ]);
+        
         /**
          * Fields can be defined using the fluent syntax or array syntax:
          * - CRUD::field('price')->type('number');
          * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
          */
     }
+
 
     /**
      * Define what happens when the Update operation is loaded.
@@ -106,5 +123,28 @@ class EjercicioCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+
+    public function store(Request $request)
+    {
+        $this->validate($request, [
+            'titulo' => 'required',
+            'descripcion' => 'required',
+            'id_video' => 'required|mimes:mp4,avi,wmv|max:102400', // máximo 100 MB
+        ]);
+
+        // guardar el archivo de video en la store de Laravel
+        $video = $request->file('id_video');
+        $video_path = $video->store('public/videos');
+
+        // crear el nuevo registro en la base de datos
+        $ejercicio = new \App\Models\Ejercicio();
+        $ejercicio->titulo = $request->input('titulo');
+        $ejercicio->descripcion = $request->input('descripcion');
+        $ejercicio->id_video = $video_path;
+        $video->move(public_path('videos'), $video->getClientOriginalName());
+        $ejercicio->save();
+
+        return redirect('/admin/ejercicio');
     }
 }

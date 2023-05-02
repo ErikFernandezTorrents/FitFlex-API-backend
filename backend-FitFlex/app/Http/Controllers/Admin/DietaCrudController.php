@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\DietaRequest;
+use Illuminate\Http\Request;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -65,6 +66,7 @@ class DietaCrudController extends CrudController
      */
     protected function setupListOperation()
     {
+         CRUD::column('id')->label(__('id'));
         CRUD::column('name');
         CRUD::column('descripcion');
         CRUD::column('filepath');
@@ -88,8 +90,21 @@ class DietaCrudController extends CrudController
 
         CRUD::field('name');
         CRUD::field('descripcion');
-        CRUD::field('filepath');
-
+        CRUD::addField([
+            'name' => 'filepath',
+            'label' => 'Archivo',
+            'type' => 'upload',
+            'upload' => true,
+            'disk' => 'public',
+            'prefix' => 'filepath',
+            'overwrite' => false,
+            'crop' => false,
+            'aspect_ratio' => 0,
+            'mime_types' => 'png,jpg,pdf',
+            'store_as' => function (Request $request, $file) {
+                return 'imagen_' . time() . '.' . $file->getClientOriginalExtension();
+            },
+        ]);
         /**
          * Fields can be defined using the fluent syntax or array syntax:
          * - CRUD::field('price')->type('number');
@@ -106,5 +121,28 @@ class DietaCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+    public function store(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required',
+            'descripcion' => 'required',
+            'filepath' => 'required|mimes:png,jpg,pdf|max:1024',
+        ]);
+
+        // guardar el archivo de video en la store de Laravel
+        $filepath = $request->file('filepath');
+        $filepath_path = $filepath->store('public/dietas');
+
+        // crear el nuevo registro en la base de datos
+        $dieta = new \App\Models\Dieta();
+        $dieta->name = $request->input('name');
+        $dieta->descripcion = $request->input('descripcion');
+        $filepath->move(public_path('dietas'), $filepath->getClientOriginalName());
+        $dieta->filepath = $filepath_path;
+        $dieta->timestamps = false;
+        $dieta->save();
+
+        return redirect('/admin/dieta');
     }
 }

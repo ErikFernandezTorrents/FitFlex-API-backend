@@ -11,6 +11,7 @@ class EjercicioSesion extends Model
     use CrudTrait;
     use HasFactory;
     protected $table = 'ejercicios_sesiones';
+    public $timestamps = false;
     protected $fillable = [
         'id_ejercicio',
         'id_sesiones',

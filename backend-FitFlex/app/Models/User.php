@@ -25,7 +25,7 @@ class User extends Authenticatable
 
     protected $table="users";
     public $guard_name = 'web';
-
+    public $timestamps = false;
     protected $fillable = [
         'id',
         'name',

@@ -67,6 +67,7 @@ class UserCrudController extends PM_UserCrudController
     }
     public function setupListOperation()
     {
+        CRUD::column('id')->label(__('id'));
         parent::setupListOperation();
         $this->crud->removeColumn('permissions');
     }

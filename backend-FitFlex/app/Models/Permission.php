@@ -11,6 +11,7 @@ class Permission extends Model
     use CrudTrait;
     use HasFactory;
     protected $table = 'permissions';
+    public $timestamps = false;
     protected $fillable = [
         'id_usuario',
         'id_curso',
