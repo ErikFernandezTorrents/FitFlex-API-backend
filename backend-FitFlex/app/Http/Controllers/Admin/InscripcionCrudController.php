@@ -29,6 +29,32 @@ class InscripcionCrudController extends CrudController
         CRUD::setModel(\App\Models\Inscripcion::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/inscripcion');
         CRUD::setEntityNameStrings('inscripcion', 'inscripcions');
+
+        if (backpack_user()->hasPermissionTo('inscripciones.list')) {
+            CRUD::allowAccess('list');
+        }else{
+            CRUD::denyAccess('list');
+        }
+        if (backpack_user()->hasPermissionTo('inscripciones.create')) {
+            CRUD::allowAccess('create');
+        }else{
+            CRUD::denyAccess('create');
+        }
+        if (backpack_user()->hasPermissionTo('inscripciones.update')) {
+            CRUD::allowAccess('update');
+        }else{
+            CRUD::denyAccess('update');
+        }
+        if (backpack_user()->hasPermissionTo('inscripciones.read')) {
+            CRUD::allowAccess('read');
+        }else{
+            CRUD::denyAccess('read');
+        }
+        if (backpack_user()->hasPermissionTo('inscripciones.delete')) {
+            CRUD::allowAccess('delete');
+        }else{
+            CRUD::denyAccess('delete');
+        }
     }
 
     /**

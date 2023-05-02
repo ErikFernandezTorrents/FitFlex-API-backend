@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\SuscripcionRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Class SuscripcionCrudController
@@ -29,6 +30,32 @@ class SuscripcionCrudController extends CrudController
         CRUD::setModel(\App\Models\Suscripcion::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/suscripcion');
         CRUD::setEntityNameStrings('suscripcion', 'suscripcions');
+
+        if (backpack_user()->hasPermissionTo('suscripciones.list')) {
+            CRUD::allowAccess('list');
+        }else{
+            CRUD::denyAccess('list');
+        }
+        if (backpack_user()->hasPermissionTo('suscripciones.create')) {
+            CRUD::allowAccess('create');
+        }else{
+            CRUD::denyAccess('create');
+        }
+        if (backpack_user()->hasPermissionTo('suscripciones.update')) {
+            CRUD::allowAccess('update');
+        }else{
+            CRUD::denyAccess('update');
+        }
+        if (backpack_user()->hasPermissionTo('suscripciones.read')) {
+            CRUD::allowAccess('read');
+        }else{
+            CRUD::denyAccess('read');
+        }
+        if (backpack_user()->hasPermissionTo('suscripciones.delete')) {
+            CRUD::allowAccess('delete');
+        }else{
+            CRUD::denyAccess('delete');
+        }
     }
 
     /**

@@ -29,6 +29,7 @@ class SesionCrudController extends CrudController
         CRUD::setModel(\App\Models\Sesion::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/sesion');
         CRUD::setEntityNameStrings('sesion', 'sesions');
+
     }
 
     /**

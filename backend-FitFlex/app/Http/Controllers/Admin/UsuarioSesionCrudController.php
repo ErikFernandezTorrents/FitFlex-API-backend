@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\UsuarioSesionRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Class UsuarioSesionCrudController
@@ -29,6 +30,32 @@ class UsuarioSesionCrudController extends CrudController
         CRUD::setModel(\App\Models\UsuarioSesion::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/usuario-sesion');
         CRUD::setEntityNameStrings('usuario sesion', 'usuario sesions');
+
+        if (backpack_user()->hasPermissionTo('usuario_sesiones.list')) {
+            CRUD::allowAccess('list');
+        }else{
+            CRUD::denyAccess('list');
+        }
+        if (backpack_user()->hasPermissionTo('usuario_sesiones.create')) {
+            CRUD::allowAccess('create');
+        }else{
+            CRUD::denyAccess('create');
+        }
+        if (backpack_user()->hasPermissionTo('usuario_sesiones.update')) {
+            CRUD::allowAccess('update');
+        }else{
+            CRUD::denyAccess('update');
+        }
+        if (backpack_user()->hasPermissionTo('usuario_sesiones.read')) {
+            CRUD::allowAccess('read');
+        }else{
+            CRUD::denyAccess('read');
+        }
+        if (backpack_user()->hasPermissionTo('usuario_sesiones.delete')) {
+            CRUD::allowAccess('delete');
+        }else{
+            CRUD::denyAccess('delete');
+        }
     }
 
     /**

@@ -29,6 +29,32 @@ class EjercicioCrudController extends CrudController
         CRUD::setModel(\App\Models\Ejercicio::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/ejercicio');
         CRUD::setEntityNameStrings('ejercicio', 'ejercicios');
+
+        if (backpack_user()->hasPermissionTo('ejercicios.list')) {
+            CRUD::allowAccess('list');
+        }else{
+            CRUD::denyAccess('list');
+        }
+        if (backpack_user()->hasPermissionTo('ejercicios.create')) {
+            CRUD::allowAccess('create');
+        }else{
+            CRUD::denyAccess('create');
+        }
+        if (backpack_user()->hasPermissionTo('ejercicios.update')) {
+            CRUD::allowAccess('update');
+        }else{
+            CRUD::denyAccess('update');
+        }
+        if (backpack_user()->hasPermissionTo('ejercicios.read')) {
+            CRUD::allowAccess('read');
+        }else{
+            CRUD::denyAccess('read');
+        }
+        if (backpack_user()->hasPermissionTo('ejercicios.delete')) {
+            CRUD::allowAccess('delete');
+        }else{
+            CRUD::denyAccess('delete');
+        }
     }
 
     /**

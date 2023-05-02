@@ -29,6 +29,32 @@ class DietaCrudController extends CrudController
         CRUD::setModel(\App\Models\Dieta::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/dieta');
         CRUD::setEntityNameStrings('dieta', 'dietas');
+
+        if (backpack_user()->hasPermissionTo('dietas.list')) {
+            CRUD::allowAccess('list');
+        }else{
+            CRUD::denyAccess('list');
+        }
+        if (backpack_user()->hasPermissionTo('dietas.create')) {
+            CRUD::allowAccess('create');
+        }else{
+            CRUD::denyAccess('create');
+        }
+        if (backpack_user()->hasPermissionTo('dietas.update')) {
+            CRUD::allowAccess('update');
+        }else{
+            CRUD::denyAccess('update');
+        }
+        if (backpack_user()->hasPermissionTo('dietas.read')) {
+            CRUD::allowAccess('read');
+        }else{
+            CRUD::denyAccess('read');
+        }
+        if (backpack_user()->hasPermissionTo('dietas.delete')) {
+            CRUD::allowAccess('delete');
+        }else{
+            CRUD::denyAccess('delete');
+        }
     }
 
     /**

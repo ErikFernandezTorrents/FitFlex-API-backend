@@ -29,6 +29,32 @@ class CursoCrudController extends CrudController
         CRUD::setModel(\App\Models\Curso::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/curso');
         CRUD::setEntityNameStrings('curso', 'cursos');
+
+        if (backpack_user()->hasPermissionTo('cursos.list')) {
+            CRUD::allowAccess('list');
+        }else{
+            CRUD::denyAccess('list');
+        }
+        if (backpack_user()->hasPermissionTo('cursos.create')) {
+            CRUD::allowAccess('create');
+        }else{
+            CRUD::denyAccess('create');
+        }
+        if (backpack_user()->hasPermissionTo('cursos.update')) {
+            CRUD::allowAccess('update');
+        }else{
+            CRUD::denyAccess('update');
+        }
+        if (backpack_user()->hasPermissionTo('cursos.read')) {
+            CRUD::allowAccess('read');
+        }else{
+            CRUD::denyAccess('read');
+        }
+        if (backpack_user()->hasPermissionTo('cursos.delete')) {
+            CRUD::allowAccess('delete');
+        }else{
+            CRUD::denyAccess('delete');
+        }
     }
 
     /**

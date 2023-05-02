@@ -29,6 +29,32 @@ class PlanCrudController extends CrudController
         CRUD::setModel(\App\Models\Plan::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/plan');
         CRUD::setEntityNameStrings('plan', 'plans');
+
+        if (backpack_user()->hasPermissionTo('planes.list')) {
+            CRUD::allowAccess('list');
+        }else{
+            CRUD::denyAccess('list');
+        }
+        if (backpack_user()->hasPermissionTo('planes.create')) {
+            CRUD::allowAccess('create');
+        }else{
+            CRUD::denyAccess('create');
+        }
+        if (backpack_user()->hasPermissionTo('planes.update')) {
+            CRUD::allowAccess('update');
+        }else{
+            CRUD::denyAccess('update');
+        }
+        if (backpack_user()->hasPermissionTo('planes.read')) {
+            CRUD::allowAccess('read');
+        }else{
+            CRUD::denyAccess('read');
+        }
+        if (backpack_user()->hasPermissionTo('planes.delete')) {
+            CRUD::allowAccess('delete');
+        }else{
+            CRUD::denyAccess('delete');
+        }
     }
 
     /**
