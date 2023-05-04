@@ -25,27 +25,27 @@ use App\Http\Controllers\Api\TokenController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+/* Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
-});
-Route::apiResource('dietas', DietasController::class);
-    //->middleware('auth:sanctum'); Descomentar cuando tengas todo comprobado
-Route::apiResource('cursos', CursosController::class);
-    //->middleware('auth:sanctum'); Descomentar cuando tengas todo comprobado
+}); */
+
+Route::apiResource('dietas', DietasController::class)->middleware('auth:sanctum');
+Route::apiResource('cursos', CursosController::class)->middleware('auth:sanctum');
 Route::apiResource('planes', PlansController::class);
 
-Route::apiResource('suscripciones', SuscripcionesController::class);
-Route::apiResource('sesiones', SesionesController::class);
-Route::apiResource('usuariosesiones', UsuarioSesionesController::class);
-Route::apiResource('ejercicios', EjerciciosController::class);
-Route::apiResource('ejerciciossesiones', EjerciciosSesionsController::class);
-Route::apiResource('inscripciones', InscripcionesController::class);
+Route::apiResource('suscripciones', SuscripcionesController::class)->middleware('auth:sanctum');
+Route::apiResource('sesiones', SesionesController::class)->middleware('auth:sanctum');
+Route::apiResource('usuariosesiones', UsuarioSesionesController::class)->middleware('auth:sanctum');
+Route::apiResource('ejercicios', EjerciciosController::class)->middleware('auth:sanctum');
+Route::apiResource('ejerciciossesiones', EjerciciosSesionsController::class)->middleware('auth:sanctum');
+Route::apiResource('inscripciones', InscripcionesController::class)->middleware('auth:sanctum');
+
+Route::post('/register', [TokenController::class, 'register']);
+Route::post('/login', [TokenController::class, 'login']);
 
 Route::get('/user', [TokenController::class, 'user'])
     ->middleware('auth:sanctum');
-Route::post('/register', [TokenController::class, 'register'])
-    ->middleware('guest');
-Route::post('/login', [TokenController::class, 'login'])
-    ->middleware('guest');
+Route::get('/updateuser', [TokenController::class, 'updateUser'])
+    ->middleware('auth:sanctum');
 Route::post('/logout', [TokenController::class, 'logout'])
     ->middleware('auth:sanctum');
