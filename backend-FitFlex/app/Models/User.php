@@ -31,6 +31,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'id_suscripcion',
+        'id_dieta',
+        'id_curso',
         'role_id'
     ];
 
@@ -66,5 +69,9 @@ class User extends Authenticatable
     public function inscribes()
     {
         return $this->belongsToMany(Curso::class, 'inscribes');
+    }
+    public function doSesions()
+    {
+        return $this->belongsToMany(Sesion::class, 'doSesion');
     }
 }

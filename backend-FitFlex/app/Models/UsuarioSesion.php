@@ -17,9 +17,9 @@ class UsuarioSesion extends Model
         'id_usuario',
     ];
 
-    public function ejercicios()
+    public function sesiones()
     {
-        return $this->belongsTo(Ejercicio::class,'id');
+        return $this->belongsTo(Sesion::class,'id');
     }
 
     public function usuarios()

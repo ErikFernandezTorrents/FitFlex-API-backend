@@ -41,6 +41,7 @@ class SesionCrudController extends CrudController
     protected function setupListOperation()
     {
         CRUD::column('id')->label(__('id'));
+        CRUD::column('id_curso');
         CRUD::column('duracion');
         CRUD::column('fecha');
 
@@ -60,7 +61,7 @@ class SesionCrudController extends CrudController
     protected function setupCreateOperation()
     {
         CRUD::setValidation(SesionRequest::class);
-
+        CRUD::field('id_curso');
         CRUD::field('duracion');
         CRUD::field('fecha');
 

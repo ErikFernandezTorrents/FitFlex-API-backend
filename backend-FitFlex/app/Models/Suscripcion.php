@@ -11,6 +11,7 @@ class Suscripcion extends Model
     use CrudTrait;
     use HasFactory;
     protected $table = 'suscripciones';
+    public $timestamps = false;
     protected $fillable = [
         'id',
         'cantidad_pagada',

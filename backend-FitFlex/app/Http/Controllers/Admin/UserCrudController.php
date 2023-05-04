@@ -69,6 +69,9 @@ class UserCrudController extends PM_UserCrudController
     {
         CRUD::column('id')->label(__('id'));
         parent::setupListOperation();
+        CRUD::column('id_suscripcion');
+        CRUD::column('id_dieta');
+        CRUD::column('id_curso');
         $this->crud->removeColumn('permissions');
     }
 }
