@@ -36,6 +36,7 @@ Route::apiResource('planes', PlansController::class);
 Route::apiResource('suscripciones', SuscripcionesController::class)->middleware('auth:sanctum');
 Route::apiResource('sesiones', SesionesController::class)->middleware('auth:sanctum');
 Route::apiResource('usuariosesiones', UsuarioSesionesController::class)->middleware('auth:sanctum');
+
 Route::apiResource('ejercicios', EjerciciosController::class)->middleware('auth:sanctum');
 Route::apiResource('ejerciciossesiones', EjerciciosSesionsController::class)->middleware('auth:sanctum');
 Route::apiResource('inscripciones', InscripcionesController::class)->middleware('auth:sanctum');
@@ -45,7 +46,9 @@ Route::post('/login', [TokenController::class, 'login']);
 
 Route::get('/user', [TokenController::class, 'user'])
     ->middleware('auth:sanctum');
-Route::get('/updateuser', [TokenController::class, 'updateUser'])
+
+Route::post('/user/{user}', [TokenController::class,'updateUser'])
     ->middleware('auth:sanctum');
+
 Route::post('/logout', [TokenController::class, 'logout'])
     ->middleware('auth:sanctum');
