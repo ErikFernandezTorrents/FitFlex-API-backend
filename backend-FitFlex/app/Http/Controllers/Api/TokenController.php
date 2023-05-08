@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Log;
 
 use App\Models\User;
 use App\Models\Role;
+use App\Models\Suscripcion;
+use Carbon\Carbon;
 
 class TokenController extends Controller
 {
@@ -25,7 +27,7 @@ class TokenController extends Controller
         ]);
     }
 
-    public function updateUser( $request, $id)
+   /*  public function updateUser( $request, $id)
     {
         $user = User::find($id);
 
@@ -64,7 +66,7 @@ class TokenController extends Controller
                 'message' => 'Error uploading User'
             ], 500);
         }
-    }
+    } */
 
     public function register(Request $request) 
     {
@@ -97,14 +99,28 @@ class TokenController extends Controller
         ]);
  
         if (Auth::attempt($credentials)) {
+
             // Get user
             $user = User::where([
                 ["email", "=", $credentials["email"]]
             ])->firstOrFail();
             // Revoke all old tokens
             $user->tokens()->delete();
+           
+            // Check subscription
+            $suscripcion = Suscripcion::find($user->id_suscripcion);
+            
+            if (Carbon::parse($suscripcion->fecha_fin)->lte(Carbon::now())) {
+                // El usuario no tiene una suscripción válida
+                $user->removeRole(Role::PREMIUM);
+                $user->assignRole(Role::USUARIO);
+                $user->save();
+            }
+
+
             // Generate new token
             return $this->_generateTokenResponse($user); 
+
         } else {
             return response()->json([
                 "success" => false,

@@ -47,7 +47,7 @@ Route::post('/login', [TokenController::class, 'login']);
 Route::get('/user', [TokenController::class, 'user'])
     ->middleware('auth:sanctum');
 
-Route::post('/user/{user}', [TokenController::class,'updateUser'])
+Route::post('/user', [TokenController::class,'updateUser'])
     ->middleware('auth:sanctum');
 
 Route::post('/logout', [TokenController::class, 'logout'])

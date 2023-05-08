@@ -31,12 +31,13 @@ class UsuarioSesionesController extends Controller
      */
     public function store(Request $request)
     {
-        $id_usuario = $request->get('id_usuario');
+        // NO. Agafar ID logged userx
+
         $id_sesion = $request->get('id_sesiones');
 
         // Desar dades a BD
         $usuarioSesion = UsuarioSesion::create([
-            'id_usuario' => $id_usuario,
+            'id_usuario' => auth()->user()->id,
             'id_sesiones' => $id_sesiones
 
         ]);
