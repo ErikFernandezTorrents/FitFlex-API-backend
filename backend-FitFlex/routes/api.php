@@ -30,6 +30,8 @@ use App\Http\Controllers\Api\TokenController;
 }); */
 
 Route::apiResource('dietas', DietasController::class)->middleware('auth:sanctum');
+Route::get('/dietas/{dieta}', [DietasController::class, 'download'])
+    ->middleware('auth:sanctum');
 Route::apiResource('cursos', CursosController::class)->middleware('auth:sanctum');
 Route::apiResource('planes', PlansController::class);
 

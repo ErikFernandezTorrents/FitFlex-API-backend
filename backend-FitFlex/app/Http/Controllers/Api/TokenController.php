@@ -110,13 +110,12 @@ class TokenController extends Controller
             // Check subscription
             $suscripcion = Suscripcion::find($user->id_suscripcion);
             
-            if (Carbon::parse($suscripcion->fecha_fin)->lte(Carbon::now())) {
+            if ($suscripcion && Carbon::parse($suscripcion->fecha_fin)->lte(Carbon::now())) {
                 // El usuario no tiene una suscripción válida
                 $user->removeRole(Role::PREMIUM);
                 $user->assignRole(Role::USUARIO);
                 $user->save();
             }
-
 
             // Generate new token
             return $this->_generateTokenResponse($user); 

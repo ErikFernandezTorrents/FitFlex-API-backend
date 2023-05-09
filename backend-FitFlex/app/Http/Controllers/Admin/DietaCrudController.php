@@ -102,7 +102,7 @@ class DietaCrudController extends CrudController
             'aspect_ratio' => 0,
             'mime_types' => 'png,jpg,pdf',
             'store_as' => function (Request $request, $file) {
-                return 'imagen_' . time() . '.' . $file->getClientOriginalExtension();
+                return $file->getClientOriginalName();
             },
         ]);
         /**
@@ -132,13 +132,12 @@ class DietaCrudController extends CrudController
 
         // guardar el archivo de video en la store de Laravel
         $filepath = $request->file('filepath');
-        $filepath_path = $filepath->store('public/dietas');
+        $filepath_path = $request->file('filepath')->storePublicly('public/dietas');
 
         // crear el nuevo registro en la base de datos
         $dieta = new \App\Models\Dieta();
         $dieta->name = $request->input('name');
         $dieta->descripcion = $request->input('descripcion');
-        $filepath->move(public_path('dietas'), $filepath->getClientOriginalName());
         $dieta->filepath = $filepath_path;
         $dieta->timestamps = false;
         $dieta->save();

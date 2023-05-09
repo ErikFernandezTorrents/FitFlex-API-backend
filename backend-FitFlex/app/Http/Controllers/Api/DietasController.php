@@ -22,4 +22,10 @@ class DietasController extends Controller
         ],200);
     }
 
+    public function download($id)
+    {
+        $dieta = Dieta::find($id);
+        return response()->download($dieta->filepath);
+    }
+
 }

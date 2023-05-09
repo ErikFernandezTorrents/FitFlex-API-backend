@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Models\Curso;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use App\Http\Resources\PaginateCollection;
+use App\Http\Resources\CursoResource;
+use App\Models\Inscripcion;
 
 class CursosController extends Controller
 {
@@ -15,11 +18,26 @@ class CursosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $query = Curso::withCount(['titulo','modalidad']);
+
+        // Filters
+        if ($titulo = $request->get('titulo')) {
+            $query->where('titulo', 'like', "%{$titulo}%");
+            }
+        
+        if ($modalidad = $request->get('modalidad')) {
+            $query->where('modalidad', 'like', "%{$modalidad}%");
+        }
+
+        // Pagination
+        $paginate = $request->get('paginate', 0);
+        $data = $paginate ? $query->paginate() : $query->get();
+
         return response()->json([
             'success' => true,
-            'data'    => Curso::all()
+            'data'    => new PaginateCollection($data, CursoResource::class)
         ],200);
     }
 
@@ -85,5 +103,31 @@ class CursosController extends Controller
     public function destroy($id)
     {
         //
+    }
+    /**
+     * Add favorite
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function inscribe($id) 
+    {
+        try {
+            $inscribe = Inscripcion::create([
+                'id_usuario'  => auth()->user()->id,
+                'id_curso' => $id
+            ]);
+        } catch (\Illuminate\Database\QueryException $e) {
+            Log::error($e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => "Inscripcion already exists"
+            ], 500); 
+        }
+        
+        return response()->json([
+            'success' => true,
+            'data'    => $inscribe
+        ], 200);
     }
 }

@@ -31,5 +31,9 @@ class Curso extends Model
     {
         return $this->belongsToMany(User::class, 'inscribed');
     }
+    public function inscribes()
+    {
+        return $this->hasMany(Inscripcion::class);
+    }
 
 }

@@ -41,7 +41,8 @@ class UsuarioSesionesController extends Controller
             'id_sesiones' => $id_sesiones
 
         ]);
-
+        $usuarioSesion->save();
+        
         if ($usuarioSesion){
             return response()->json([
                 'success' => true,
