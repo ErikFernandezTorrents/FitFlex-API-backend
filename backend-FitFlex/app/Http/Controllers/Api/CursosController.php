@@ -20,20 +20,24 @@ class CursosController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Curso::withCount(['titulo','modalidad']);
+        $query = null;
 
         // Filters
         if ($titulo = $request->get('titulo')) {
-            $query->where('titulo', 'like', "%{$titulo}%");
-            }
+            $query = Curso::where('titulo', 'like', "%{$titulo}%");
+        }
         
         if ($modalidad = $request->get('modalidad')) {
-            $query->where('modalidad', 'like', "%{$modalidad}%");
+            $query = $query 
+                ? $query->where('modalidad', 'like', "%{$modalidad}%")
+                : Curso::where('modalidad', 'like', "%{$modalidad}%");
         }
 
         // Pagination
         $paginate = $request->get('paginate', 0);
-        $data = $paginate ? $query->paginate() : $query->get();
+        $data = $query 
+            ? ($paginate ? $query->paginate() : $query->get()) // si no funciona quita $paginate ? $query->paginate() y $paginate ? Curso::paginate()
+            : ($paginate ? Curso::paginate() : Curso::all());
 
         return response()->json([
             'success' => true,

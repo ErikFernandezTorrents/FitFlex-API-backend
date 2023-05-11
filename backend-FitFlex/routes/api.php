@@ -33,6 +33,8 @@ Route::apiResource('dietas', DietasController::class)->middleware('auth:sanctum'
 Route::get('/dietas/{dieta}', [DietasController::class, 'download'])
     ->middleware('auth:sanctum');
 Route::apiResource('cursos', CursosController::class)->middleware('auth:sanctum');
+Route::post('/cursos/{curso}/inscribe', [CursosController::class, 'inscribe'])->name('cursos.inscribe');
+
 Route::apiResource('planes', PlansController::class);
 
 Route::apiResource('suscripciones', SuscripcionesController::class)->middleware('auth:sanctum');
