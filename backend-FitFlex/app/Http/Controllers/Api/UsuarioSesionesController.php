@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\UsuarioSesion;
 use Illuminate\Support\Facades\Storage;
@@ -17,9 +18,17 @@ class UsuarioSesionesController extends Controller
      */
     public function index()
     {
+        $uid = auth()->user()->id;
+
+        $usuarioSesion = DB::table('usuario_sesiones')
+            ->join('sesiones', 'sesiones.id', '=', 'usuario_sesiones.id_sesiones')
+            ->where('usuario_sesiones.id_usuario', '=', $uid)
+            ->select('sesiones.*')
+            ->get();
+
         return response()->json([
             'success' => true,
-            'data'    => UsuarioSesion::all()
+            'data'    => $usuarioSesion
         ],200);
     }
 
@@ -31,7 +40,6 @@ class UsuarioSesionesController extends Controller
      */
     public function store(Request $request)
     {
-        // NO. Agafar ID logged userx
 
         $id_sesion = $request->get('id_sesiones');
 

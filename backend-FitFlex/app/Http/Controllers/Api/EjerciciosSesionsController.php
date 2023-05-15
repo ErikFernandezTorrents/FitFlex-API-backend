@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Api;
-
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\EjercicioSesion;
@@ -16,11 +16,17 @@ class EjerciciosSesionsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($sid)
     {
+        $ejercicios = DB::table('ejercicios_sesiones')
+            ->join('ejercicios', 'ejercicios.id', '=', 'ejercicios_sesiones.id_ejercicio')
+            ->where('ejercicios_sesiones.id_sesiones', '=', $sid)
+            ->select('ejercicios.*')
+            ->get();
+
         return response()->json([
             'success' => true,
-            'data'    => EjercicioSesion::all()
+            'data'    => $ejercicios
         ],200);
     }
 

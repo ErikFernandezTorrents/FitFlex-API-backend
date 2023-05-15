@@ -19,12 +19,12 @@ class EjercicioSesion extends Model
 
     public function ejercicios()
     {
-        return $this->belongsTo(Ejercicio::class,'id');
+        return $this->belongsToMany(Ejercicio::class,'id');
     }
 
     public function sesiones()
     {
-        return $this->belongsTo(Sesion::class,'id');
+        return $this->belongsToMany(Sesion::class,'id');
     }
 
 }

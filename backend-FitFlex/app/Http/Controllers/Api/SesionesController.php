@@ -21,7 +21,7 @@ class SesionesController extends Controller
         return response()->json([
             'success' => true,
             'data'    => SesionResource::collection(
-                Sesion::where("id_curso", "=", $cid)
+                Sesion::where("id_curso", "=", $cid)->get()
             )
         ],200);
     }

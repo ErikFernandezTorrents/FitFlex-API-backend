@@ -38,9 +38,11 @@ Route::delete('/cursos/{curso}/inscribe', [CursosController::class, 'uninscribe'
 
 Route::post('/cursos/{curso}', [CursosController::class, 'show'])->name('cursos.show');
 
-Route::apiResource('/cursos/{curso}/sesiones', SesionesController::class)->middleware('auth:sanctum');
+Route::apiResource('cursos.sesiones', SesionesController::class)
+    ->middleware(['auth:sanctum']);
 
-Route::apiResource('usuariosesiones', UsuarioSesionesController::class)->middleware('auth:sanctum');
+Route::post('sesiones/{sesionId}', [UsuarioSesionesController::class,'store'])->middleware('auth:sanctum');
+Route::get('usuarioSesiones/', [UsuarioSesionesController::class, 'index'])->middleware('auth:sanctum');
 
 Route::apiResource('planes', PlansController::class);
 
@@ -48,6 +50,8 @@ Route::apiResource('suscripciones', SuscripcionesController::class)->middleware(
 
 Route::apiResource('ejercicios', EjerciciosController::class)->middleware('auth:sanctum');
 Route::apiResource('ejerciciossesiones', EjerciciosSesionsController::class)->middleware('auth:sanctum');
+Route::get('sesiones/{sesionId}/ejercicios', [EjerciciosSesionsController::class, 'index'])->middleware('auth:sanctum');
+
 Route::apiResource('inscripciones', InscripcionesController::class)->middleware('auth:sanctum');
 
 Route::post('/register', [TokenController::class, 'register']);

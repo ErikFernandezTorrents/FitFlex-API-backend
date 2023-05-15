@@ -17,7 +17,7 @@ class SesionResource extends JsonResource
         return [
             'id'         => $this->id,
             'duracion'     => $this->duracion,
-            'id_curso'      => new CursoResource($this->id_curso),
+            'id_curso'      => $this->id_curso,
             'fecha'       => $this->fecha,
         ];
     }

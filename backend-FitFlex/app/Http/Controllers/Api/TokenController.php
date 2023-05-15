@@ -27,47 +27,6 @@ class TokenController extends Controller
         ]);
     }
 
-   /*  public function updateUser( $request, $id)
-    {
-        $user = User::find($id);
-
-        if (empty($user)) {
-            return response()->json([
-                'success'  => false,
-                'message' => 'User not found'
-            ], 404);
-        }
-
-        $validatedData = $request->validate([
-            "name"      => "required|string|max:255",
-            "email"     => "required|string|email|max:255|unique:users",
-            "password"  => "required|string|min:8"
-        ]);
-
-        $user = User::create([
-            "name"      => $validatedData["name"],
-            "email"     => $validatedData["email"],
-            "password"  => Hash::make($validatedData["password"]),
-        ]);
-        if ($validatedData) {
-            Log::debug("Updating DB...");
-            $user->name    = $validatedData['name'];
-            $user->email   = $validatedData['email'];
-            $user->password   = $validatedData['password'];
-            $user->save();
-            Log::debug("DB storage OK");
-            return response()->json([
-                'success' => true,
-                'data'    => $user
-            ], 200);
-        } else {
-            return response()->json([
-                'success'  => false,
-                'message' => 'Error uploading User'
-            ], 500);
-        }
-    } */
-
     public function register(Request $request) 
     {
         $validatedData = $request->validate([
