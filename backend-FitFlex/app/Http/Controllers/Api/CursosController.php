@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Curso;
+use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use App\Http\Resources\PaginateCollection;
@@ -18,6 +19,10 @@ class CursosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum')->only('show','inscribe','uninscribe');
+    }
     public function index(Request $request)
     {
         $query = null;
@@ -116,22 +121,62 @@ class CursosController extends Controller
      */
     public function inscribe($id) 
     {
-        try {
-            $inscribe = Inscripcion::create([
-                'id_usuario'  => auth()->user()->id,
-                'id_curso' => $id
-            ]);
-        } catch (\Illuminate\Database\QueryException $e) {
-            Log::error($e->getMessage());
+        $id_usuario = auth()->user()->id;
+        $inscripcion = Inscripcion::where('id_usuario', $id_usuario)->first();
+        $user = auth()->user();
+        Log::debug($id_usuario);
+        Log::debug($inscripcion);
+        $userRoles = $user->roles->pluck('name')->toArray();
+        $isUsuario = $user->hasRole('usuario');
+
+        
+        Log::debug('Antes de entrar en el if');
+        if ($isUsuario && $inscripcion) {
+            Log::debug('Entro en el if');
             return response()->json([
                 'success' => false,
-                'message' => "Inscripcion already exists"
-            ], 500); 
+                'message' => 'Ya estás inscrito en un curso'
+            ], 200);
+        }else{
+
+            try {
+                $inscribe = Inscripcion::create([
+                    'id_usuario'  => auth()->user()->id,
+                    'id_curso' => $id
+                ]);
+            } catch (\Illuminate\Database\QueryException $e) {
+                Log::error($e->getMessage());
+                return response()->json([
+                    'success' => false,
+                    'message' => "Inscripcion already exists"
+                ], 500); 
+            }
+            
+            return response()->json([
+                'success' => true,
+                'data'    => $inscribe
+            ], 200);
         }
-        
-        return response()->json([
-            'success' => true,
-            'data'    => $inscribe
-        ], 200);
+    }
+
+    public function uninscribe($id)
+    {
+        $inscribe = Inscripcion::where([
+            ['id_usuario',  '=' ,auth()->user()->id],
+            ['id_curso',  '=' ,$id]
+        ])->first();
+
+        if ($inscribe) {
+            $inscribe->delete();
+            return response()->json([
+                'success' => true,
+                'data'    => $inscribe
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => "Inscription not exists"
+            ], 404); 
+        }
     }
 }

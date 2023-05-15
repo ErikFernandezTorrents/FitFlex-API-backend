@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Sesion;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use App\Http\Resources\SesionResource;
 
 class SesionesController extends Controller
 {
@@ -15,11 +16,13 @@ class SesionesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($cid)
     {
         return response()->json([
             'success' => true,
-            'data'    => Sesion::all()
+            'data'    => SesionResource::collection(
+                Sesion::where("id_curso", "=", $cid)
+            )
         ],200);
     }
 
@@ -40,9 +43,13 @@ class SesionesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id,$cid)
     {
-        $sesion = Sesion::find($id);
+        $sesion = Sesion::where([
+            ['id', '=', $id],
+            ['id_curso', '=', $cid],
+        ])->first();
+
         if ($sesion == null){
             return response()->json([
                 'success'  => false,

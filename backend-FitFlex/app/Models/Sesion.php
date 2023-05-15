@@ -25,7 +25,7 @@ class Sesion extends Model
     }
     public function doSesioned()
     {
-        return $this->belongsTo(User::class, 'doSesion');
+        return $this->belongsTo(User::class);
     }
 
 }

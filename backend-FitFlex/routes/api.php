@@ -34,12 +34,17 @@ Route::get('/dietas/{dieta}', [DietasController::class, 'download'])
     ->middleware('auth:sanctum');
 Route::apiResource('cursos', CursosController::class)->middleware('auth:sanctum');
 Route::post('/cursos/{curso}/inscribe', [CursosController::class, 'inscribe'])->name('cursos.inscribe');
+Route::delete('/cursos/{curso}/inscribe', [CursosController::class, 'uninscribe'])->name('cursos.uninscribe');
+
+Route::post('/cursos/{curso}', [CursosController::class, 'show'])->name('cursos.show');
+
+Route::apiResource('/cursos/{curso}/sesiones', SesionesController::class)->middleware('auth:sanctum');
+
+Route::apiResource('usuariosesiones', UsuarioSesionesController::class)->middleware('auth:sanctum');
 
 Route::apiResource('planes', PlansController::class);
 
 Route::apiResource('suscripciones', SuscripcionesController::class)->middleware('auth:sanctum');
-Route::apiResource('sesiones', SesionesController::class)->middleware('auth:sanctum');
-Route::apiResource('usuariosesiones', UsuarioSesionesController::class)->middleware('auth:sanctum');
 
 Route::apiResource('ejercicios', EjerciciosController::class)->middleware('auth:sanctum');
 Route::apiResource('ejerciciossesiones', EjerciciosSesionsController::class)->middleware('auth:sanctum');
