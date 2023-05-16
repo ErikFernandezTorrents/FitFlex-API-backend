@@ -124,8 +124,6 @@ class CursosController extends Controller
         $id_usuario = auth()->user()->id;
         $inscripcion = Inscripcion::where('id_usuario', $id_usuario)->first();
         $user = auth()->user();
-        Log::debug($id_usuario);
-        Log::debug($inscripcion);
         $userRoles = $user->roles->pluck('name')->toArray();
         $isUsuario = $user->hasRole('usuario');
 

@@ -41,7 +41,7 @@ Route::post('/cursos/{curso}', [CursosController::class, 'show'])->name('cursos.
 Route::apiResource('cursos.sesiones', SesionesController::class)
     ->middleware(['auth:sanctum']);
 
-Route::post('sesiones/{sesionId}', [UsuarioSesionesController::class,'store'])->middleware('auth:sanctum');
+Route::post('usuarioSesiones/{sesionId}', [UsuarioSesionesController::class,'store'])->middleware('auth:sanctum');
 Route::get('usuarioSesiones/', [UsuarioSesionesController::class, 'index'])->middleware('auth:sanctum');
 
 Route::apiResource('planes', PlansController::class);
@@ -52,7 +52,8 @@ Route::apiResource('ejercicios', EjerciciosController::class)->middleware('auth:
 Route::apiResource('ejerciciossesiones', EjerciciosSesionsController::class)->middleware('auth:sanctum');
 Route::get('sesiones/{sesionId}/ejercicios', [EjerciciosSesionsController::class, 'index'])->middleware('auth:sanctum');
 
-Route::apiResource('inscripciones', InscripcionesController::class)->middleware('auth:sanctum');
+Route::get('misCursos/', [InscripcionesController::class, 'index'])->middleware('auth:sanctum');
+
 
 Route::post('/register', [TokenController::class, 'register']);
 Route::post('/login', [TokenController::class, 'login']);

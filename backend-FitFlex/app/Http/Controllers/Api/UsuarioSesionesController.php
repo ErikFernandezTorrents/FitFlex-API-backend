@@ -38,10 +38,9 @@ class UsuarioSesionesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store($sid)
     {
-
-        $id_sesion = $request->get('id_sesiones');
+        $id_sesion = $sid;
 
         // Desar dades a BD
         $usuarioSesion = UsuarioSesion::create([

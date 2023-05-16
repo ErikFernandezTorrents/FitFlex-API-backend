@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Models\Inscripcion;
+use App\Models\Curso;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 
@@ -17,9 +19,19 @@ class InscripcionesController extends Controller
      */
     public function index()
     {
+        $id_usuario = auth()->user()->id;
+
+        $inscripcionUsuario = Inscripcion::where('id_usuario',$id_usuario->first());
+
+        $miscursos = DB::table('inscripciones')
+            ->join('cursos', 'cursos.id', '=', 'inscripciones.id_curso')
+            ->where('inscripciones.id_usuario', '=', $id_usuario)
+            ->select('cursos.*')
+            ->get();
+
         return response()->json([
             'success' => true,
-            'data'    => Inscripcion::all()
+            'data'    => $miscursos
         ],200);
     }
 
