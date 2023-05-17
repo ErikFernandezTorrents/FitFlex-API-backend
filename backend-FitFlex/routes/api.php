@@ -13,6 +13,9 @@ use App\Http\Controllers\Api\EjerciciosController;
 use App\Http\Controllers\Api\EjerciciosSesionsController;
 use App\Http\Controllers\Api\InscripcionesController;
 use App\Http\Controllers\Api\TokenController;
+use App\Http\Controllers\Api\StripePaymentController;
+use App\Http\Middleware\CorsMiddleware;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -46,7 +49,7 @@ Route::get('usuarioSesiones/', [UsuarioSesionesController::class, 'index'])->mid
 
 Route::apiResource('planes', PlansController::class);
 
-Route::apiResource('suscripciones', SuscripcionesController::class)->middleware('auth:sanctum');
+Route::post('suscribete', [SuscripcionesController::class,'store'])->middleware('auth:sanctum');
 
 Route::apiResource('ejercicios', EjerciciosController::class)->middleware('auth:sanctum');
 Route::apiResource('ejerciciossesiones', EjerciciosSesionsController::class)->middleware('auth:sanctum');
@@ -54,6 +57,8 @@ Route::get('sesiones/{sesionId}/ejercicios', [EjerciciosSesionsController::class
 
 Route::get('misCursos/', [InscripcionesController::class, 'index'])->middleware('auth:sanctum');
 
+
+Route::post('/suscripcion', [StripePaymentController::class, 'stripePost'])->middleware('cors','auth:sanctum');
 
 Route::post('/register', [TokenController::class, 'register']);
 Route::post('/login', [TokenController::class, 'login']);

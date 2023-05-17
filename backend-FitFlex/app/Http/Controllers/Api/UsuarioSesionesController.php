@@ -40,12 +40,11 @@ class UsuarioSesionesController extends Controller
      */
     public function store($sid)
     {
-        $id_sesion = $sid;
 
         // Desar dades a BD
         $usuarioSesion = UsuarioSesion::create([
             'id_usuario' => auth()->user()->id,
-            'id_sesiones' => $id_sesiones
+            'id_sesiones' => $sid
 
         ]);
         $usuarioSesion->save();

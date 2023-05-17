@@ -18,6 +18,7 @@ class Suscripcion extends Model
         'fecha_ini',
         'fecha_fin',
         'periodo_contr',
+        'id_plan'
     ];
 
     public function planes()

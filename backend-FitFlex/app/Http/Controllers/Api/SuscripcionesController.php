@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Models\Suscripcion;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use App\Models\Role;
+use App\Models\User;
+use Carbon\Carbon;
 
 
 class SuscripcionesController extends Controller
@@ -16,6 +19,12 @@ class SuscripcionesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum')->only('store');
+    }
+
     public function index()
     {
         //
@@ -27,9 +36,35 @@ class SuscripcionesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store()
     {
-        //
+        $id = auth()->user()->id;
+        $user = User::where('id',$id)->first();
+
+        $user->removeRole(Role::USUARIO);
+        $user->assignRole(Role::PREMIUM);
+        
+        $user->tokens()->delete();
+        $user->save();
+        
+        $fechaIni = Carbon::now();
+        $fechaFin = $fechaIni->copy()->addYear();
+
+        $suscripcion = Suscripcion::create([
+            "cantidad_pagada"      => "100",
+            "fecha_ini"     => $fechaIni,
+            "fecha_fin"  => $fechaFin,
+            "periodo_contr" => "1",
+            "id_plan" => "1",
+        ]);
+
+        $usuarioModificado = User::where('id', $id)
+        ->update(['id_suscripcion' => $suscripcion->id]);
+
+        return response()->json([
+            'success' => true,
+            'data'    => $usuarioModificado
+        ],200);
     }
 
     /**
