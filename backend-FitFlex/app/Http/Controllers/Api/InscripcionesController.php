@@ -21,7 +21,7 @@ class InscripcionesController extends Controller
     {
         $id_usuario = auth()->user()->id;
 
-        $inscripcionUsuario = Inscripcion::where('id_usuario',$id_usuario->first());
+        $inscripcionUsuario = Inscripcion::where('id_usuario',$id_usuario)->first();
 
         $miscursos = DB::table('inscripciones')
             ->join('cursos', 'cursos.id', '=', 'inscripciones.id_curso')
