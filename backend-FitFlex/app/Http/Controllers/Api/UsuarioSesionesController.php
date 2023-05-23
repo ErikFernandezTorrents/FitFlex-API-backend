@@ -92,8 +92,24 @@ class UsuarioSesionesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function unsSesion($id)
     {
-        //
+        $usuarioSesion = UsuarioSesion::where([
+            ['id_usuario',  '=' ,auth()->user()->id],
+            ['id_sesiones',  '=' ,$id]
+        ])->first();
+
+        if ($usuarioSesion) {
+            $usuarioSesion->delete();
+            return response()->json([
+                'success' => true,
+                'data'    => $usuarioSesion
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => "Inscription not exists"
+            ], 404); 
+        }
     }
 }

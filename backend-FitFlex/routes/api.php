@@ -45,6 +45,7 @@ Route::apiResource('cursos.sesiones', SesionesController::class)
     ->middleware(['auth:sanctum']);
 
 Route::post('usuarioSesiones/{sesionId}', [UsuarioSesionesController::class,'store'])->middleware('auth:sanctum');
+Route::delete('usuarioSesiones/{sesionId}', [UsuarioSesionesController::class, 'unsSesion'])->middleware('auth:sanctum');
 Route::get('usuarioSesiones/', [UsuarioSesionesController::class, 'index'])->middleware('auth:sanctum');
 
 Route::apiResource('planes', PlansController::class);
